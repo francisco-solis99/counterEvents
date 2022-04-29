@@ -2,12 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="./style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <header class="header">
+        <div class="wrapper">
+          <h1 class="counter-event__title">Counter Days Events</h1>
+          <form action="" class="counter-event__form">
+            <div class="inputs__wrapper">
+              <input type="text" class="counter-event__input" placeholder="Add an event">
+              <input type="date" class="counter-event__input">
+            </div>
+            <input type="submit" class="counter-event__input" value="Agregar">
+          </form>
+        </div>
+      </header>
+      <main class="main">
+        <ul class="counter-event__list">
+          <!-- here is the events to add -->
+          <li class="couter-event__item">
+            <p class="counter-event__days"><span>20</span>dias</p>
+            <p class="counter-event__title">Custom event</p>
+            <p class="counter-event__date">20/1/1</p>
+            <button type="button" class="counter-event__button">Eliminar</button>
+          </li>
+        </ul>
+      </main>
+    </div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
