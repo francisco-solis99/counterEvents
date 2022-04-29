@@ -109,7 +109,6 @@ input[type="submit"]:hover {
 /* lists and items */
 .main {
   margin-top: 30%;
-  background-color: #542caa;
 }
 
 .counter-event__list {
@@ -122,5 +121,27 @@ input[type="submit"]:hover {
 }
 
 .couter-event__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 0.9rem;
   border: 2px solid white;
 }
+
+.counter-event__name {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: normal;
+  margin: 0;
+}
+
+.counter-event__button {
+  padding: 4px;
+  border: 0;
+  border-radius: 5px;
+  background-color: rgb(229, 22, 22);
+  color: white;
+}
+
+
