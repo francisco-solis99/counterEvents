@@ -145,3 +145,22 @@ input[type="submit"]:hover {
 }
 
 
+input:not(:placeholder-shown):not([type="date"]):invalid {
+  border: 2px solid red;
+  animation: shake 400ms linear;
+}
+
+@keyframes shake {
+  25% {
+    transform: translateX(4px);
+  }
+
+  50% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(4px);
+  }
+}
+
