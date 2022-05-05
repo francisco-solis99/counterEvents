@@ -19,6 +19,14 @@ Model.prototype = {
     this.actionToBind('addEvent', { ...event });
   },
 
+  updateDates () {
+    if (!this.eventsList.length) return;
+    this.eventsList.forEach(event => {
+      event.daysForEvent = this.getDaysLeftForEvent(event.date);
+    });
+    this.saveEventsList();
+  },
+
   getDaysLeftForEvent (date) {
     const MS_TODAYS = 1000 * 60 * 60 * 24;
     const todayMs = new Date(new Date(Date.now()).toDateString()).getTime();

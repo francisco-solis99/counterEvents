@@ -47,7 +47,7 @@ View.prototype = {
         : '';
     liItem.innerHTML = `
       <li class="couter-event__item" id=${id}>
-        <p class="counter-event__days"><span>${daysForEvent || 'Today'}</span> ${daysLabel}</p>
+        <p class="counter-event__days"><span>${Math.abs(daysForEvent) || 'Today'}</span> ${daysLabel} ${daysForEvent >= 0 ? '' : 'ago'}</p>
         <p class="counter-event__name">${title}</p>
         <p class="counter-event__date">${date}</p>
         <button type="button" class="counter-event__button">Eliminar</button>

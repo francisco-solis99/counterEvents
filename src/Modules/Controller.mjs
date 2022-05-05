@@ -10,7 +10,7 @@ export function Controller (model, view) {
   this.model.bindEventsChanges(this.onEventsChanges.bind(this));
 
   // render the initial events if exist
-  this.view.renderInitialEvents(this.model.getEvents());
+  this.handlerInitRender();
 }
 
 Controller.prototype = {
@@ -28,6 +28,11 @@ Controller.prototype = {
     if (action === 'addEvent') return this.view.addEvent(event);
     if (action === 'deleteEvent') return this.view.deleteEvent(event);
     return console.info('Check your request action and try again 😀');
+  },
+
+  handlerInitRender () {
+    this.model.updateDates();
+    this.view.renderInitialEvents(this.model.getEvents());
   }
 
 };
