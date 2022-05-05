@@ -117,7 +117,6 @@ input[type="submit"]:hover {
   max-width: 800px;
   margin: 0 auto;
   list-style-type: none;
-  background-color: #af2295;
 }
 
 .couter-event__item {
@@ -127,6 +126,12 @@ input[type="submit"]:hover {
   padding: 10px;
   font-size: 0.9rem;
   border: 2px solid white;
+  animation: fadeIn ease-in 500ms;
+  cursor: move;
+}
+
+.couter-event__item-delated {
+  animation: fadeOut ease-in 400ms;
 }
 
 .counter-event__name {
@@ -142,6 +147,7 @@ input[type="submit"]:hover {
   border-radius: 5px;
   background-color: rgb(229, 22, 22);
   color: white;
+  cursor: pointer;
 }
 
 
@@ -164,3 +170,26 @@ input:not(:placeholder-shown):not([type="date"]):invalid {
   }
 }
 
+@keyframes fadeIn {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}

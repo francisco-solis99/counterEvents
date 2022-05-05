@@ -30,15 +30,24 @@ View.prototype = {
 
   deleteEvent ({ id }) {
     const eventToDelete = document.querySelector(`li[id="${id}"]`);
-    eventToDelete.remove();
+    setTimeout(function () {
+      eventToDelete.classList.add('couter-event__item-delated');
+      eventToDelete.onanimationend = function () {
+        eventToDelete.remove();
+      };
+    }, 200);
   },
 
   createEvent ({ id, title, date, daysForEvent }) {
     const liItem = document.createElement('li');
-    const daysLabel = daysForEvent === 1 || daysForEvent === -1 ? 'day' : 'days';
+    const daysLabel = daysForEvent === 1 || daysForEvent === -1
+      ? 'day'
+      : daysForEvent
+        ? 'days'
+        : '';
     liItem.innerHTML = `
       <li class="couter-event__item" id=${id}>
-        <p class="counter-event__days"><span>${daysForEvent}</span> ${daysLabel}</p>
+        <p class="counter-event__days"><span>${daysForEvent || 'Today'}</span> ${daysLabel}</p>
         <p class="counter-event__name">${title}</p>
         <p class="counter-event__date">${date}</p>
         <button type="button" class="counter-event__button">Eliminar</button>
