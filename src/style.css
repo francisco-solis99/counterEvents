@@ -193,3 +193,11 @@ input:not(:placeholder-shown):not([type="date"]):invalid {
     opacity: 0;
   }
 }
+
+
+/* For the defaulkt message */
+.counter-event__default-msg {
+  text-align: center;
+  font-size: 1.4rem;
+  color: #ca88ba;
+}

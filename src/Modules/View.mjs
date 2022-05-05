@@ -24,17 +24,25 @@ View.prototype = {
   },
 
   addEvent (event) {
+    if (this.eventsListHtml.querySelector('.counter-event__default-msg')) {
+      this.eventsListHtml.innerHTML = '';
+    }
     const newEvent = this.createEvent(event);
     this.eventsListHtml.appendChild(newEvent);
   },
 
   deleteEvent ({ id }) {
     const eventToDelete = document.querySelector(`li[id="${id}"]`);
+    const that = this;
     setTimeout(function () {
       eventToDelete.classList.add('couter-event__item-delated');
       eventToDelete.onanimationend = function () {
         eventToDelete.remove();
       };
+      if (that.eventsListHtml.querySelector('li')) {
+        // for take time to end the last animation
+        setTimeout(() => that.renderDefaultMessage('No more events 😃'), 400);
+      }
     }, 200);
   },
 
@@ -56,8 +64,18 @@ View.prototype = {
     return liItem;
   },
 
+  renderDefaultMessage (textMessage) {
+    const messageElement = document.createElement('h2');
+    messageElement.classList.add('counter-event__default-msg');
+    messageElement.innerText = textMessage;
+    this.eventsListHtml.appendChild(messageElement);
+  },
+
   renderInitialEvents (events) {
-    if (!events.length) return;
+    if (!events.length) {
+      this.renderDefaultMessage('Not Events yet 😀');
+      return;
+    };
     const fragmnet = document.createDocumentFragment();
     events.forEach(event => fragmnet.appendChild(this.createEvent(event)));
     this.eventsListHtml.appendChild(fragmnet);
