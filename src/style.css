@@ -108,7 +108,7 @@ input[type="submit"]:hover {
 
 /* lists and items */
 .main {
-  margin-top: 30%;
+  margin-top: 25%;
 }
 
 .counter-event__list {
@@ -126,8 +126,11 @@ input[type="submit"]:hover {
   padding: 10px;
   font-size: 0.9rem;
   border: 2px solid white;
-  animation: fadeIn ease-in 500ms;
   cursor: move;
+}
+
+.couter-event__item, .counter-event__resume {
+  animation: fadeIn ease-in 500ms;
 }
 
 .couter-event__item-delated {
@@ -156,6 +159,7 @@ input:not(:placeholder-shown):not([type="date"]):invalid {
   animation: shake 400ms linear;
 }
 
+/* For the aniamtions */
 @keyframes shake {
   25% {
     transform: translateX(4px);
@@ -200,4 +204,35 @@ input:not(:placeholder-shown):not([type="date"]):invalid {
   text-align: center;
   font-size: 1.4rem;
   color: #ca88ba;
+}
+
+
+/* Style for the resume */
+.counter-event__resume {
+  width: 80%;
+  min-width: 180px;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 15px;
+  padding: 8px 5px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  align-items: center;
+  color: #25273C;
+  color: hsl(234deg 39% 85%);
+  border: 2px dashed white;
+}
+
+.counter-event__resume span {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+
+.counter-event__resume span:nth-child(1) mark{
+  background-color: hsl(145, 73%, 57%);
+}
+
+.counter-event__resume span:nth-child(2) mark{
+  background-color: hsl(9, 70%, 59%);
 }
