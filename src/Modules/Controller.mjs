@@ -18,10 +18,19 @@ Controller.prototype = {
 
   handlerAddEvent ({ title, date }) {
     this.model.addEvent(title, date);
+
+    // update or creat the resume
+    const events = this.model.getEvents();
+    if (events.length === 1) {
+      this.view.renderResumeEvents(this.model.generateEventStats());
+    } else {
+      this.view.updateResume(this.model.generateEventStats());
+    }
   },
 
   handlerDeleteEvent (idEvent) {
     this.model.deleteEvent(idEvent);
+    this.view.updateResume(this.model.generateEventStats());
   },
 
   onEventsChanges (action, event) {
@@ -33,6 +42,7 @@ Controller.prototype = {
   handlerInitRender () {
     this.model.updateDates();
     this.view.renderInitialEvents(this.model.getEvents());
+    this.view.renderResumeEvents(this.model.generateEventStats());
   }
 
 };

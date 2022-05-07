@@ -39,7 +39,7 @@ View.prototype = {
       eventToDelete.onanimationend = function () {
         eventToDelete.remove();
       };
-      if (that.eventsListHtml.querySelector('li')) {
+      if (!that.eventsListHtml.querySelector('li')) {
         // for take time to end the last animation
         setTimeout(() => that.renderDefaultMessage('No more events 😃'), 400);
       }
@@ -79,5 +79,27 @@ View.prototype = {
     const fragmnet = document.createDocumentFragment();
     events.forEach(event => fragmnet.appendChild(this.createEvent(event)));
     this.eventsListHtml.appendChild(fragmnet);
+  },
+
+  renderResumeEvents ({ totalEvents, nextEvents, passedEvents }) {
+    if (!totalEvents) return;
+    const resume = document.createElement('div');
+    resume.classList.add('counter-event__resume');
+    resume.innerHTML = `
+      <span class="counter-event__resume-total">${totalEvents} total events</span>
+      <div class="counter-event__resume-stats">
+        <span class="counter-event__resume-stat"><mark>${nextEvents} events will pass</mark></span>
+        <span class="counter-event__resume-stat"><mark>${passedEvents} events passed</mark></span>
+      </div>
+    `;
+    document.querySelector('main').appendChild(resume);
+  },
+
+  updateResume (stats) {
+    const resume = document.querySelector('.counter-event__resume');
+    // update values
+    resume.querySelector('.counter-event__resume-total').textContent = stats.totalEvents + ' total events';
+    resume.querySelector('.counter-event__resume-stat:first-child mark').textContent = stats.nextEvents + ' events will pass';
+    resume.querySelector('.counter-event__resume-stat:last-child mark').textContent = stats.passedEvents + ' events passed';
   }
 };

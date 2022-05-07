@@ -59,5 +59,14 @@ Model.prototype = {
 
   bindEventsChanges (callback) {
     this.actionToBind = callback;
+  },
+
+  generateEventStats () {
+    const stats = this.eventsList.reduce((stats, event) => {
+      event.daysForEvent >= 0 ? stats.nextEvents += 1 : stats.passedEvents += 1;
+      return stats;
+    }, { passedEvents: 0, nextEvents: 0 });
+    stats.totalEvents = stats.nextEvents + stats.passedEvents;
+    return stats;
   }
 };
