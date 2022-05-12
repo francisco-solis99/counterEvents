@@ -15,6 +15,7 @@ body {
   font-family: Inter;
   background-color: #161722;
   color: white;
+  scroll-behavior: smooth;
 }
 
 #app {
@@ -108,7 +109,7 @@ input[type="submit"]:hover {
 
 /* lists and items */
 .main {
-  margin-top: 25%;
+  margin-top: 135px;
 }
 
 .counter-event__list {
@@ -213,14 +214,20 @@ input:not(:placeholder-shown):not([type="date"]):invalid {
   min-width: 180px;
   max-width: 800px;
   margin: 0 auto;
-  margin-top: 15px;
-  padding: 8px 5px;
+  margin-top: 20px;
+  padding: 10px 7px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   align-items: center;
+  justify-items: center;
   color: #25273C;
   color: hsl(234deg 39% 85%);
   border: 2px dashed white;
+}
+
+.counter-event__resume-views, .counter-event__resume-stats {
+  display: flex;
+  flex-direction: column;
 }
 
 .counter-event__resume span {
@@ -228,6 +235,19 @@ input:not(:placeholder-shown):not([type="date"]):invalid {
   font-weight: bold;
 }
 
+.counter-event__resume .counter-event__resume-total {
+  font-size: 0.9rem;
+}
+
+.counter-event__resume-stats span {
+  margin: 4px 0;
+}
+
+/* .counter-event__resume span mark {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+} */
 
 .counter-event__resume span:nth-child(1) mark{
   background-color: hsl(145, 73%, 57%);

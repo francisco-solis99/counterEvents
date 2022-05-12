@@ -61,12 +61,12 @@ Model.prototype = {
     this.actionToBind = callback;
   },
 
-  generateEventStats () {
+  generateSeparetedEvents () {
     const stats = this.eventsList.reduce((stats, event) => {
-      event.daysForEvent >= 0 ? stats.nextEvents += 1 : stats.passedEvents += 1;
+      event.daysForEvent >= 0 ? stats.nextEvents.push({ ...event }) : stats.passedEvents.push({ ...event });
       return stats;
-    }, { passedEvents: 0, nextEvents: 0 });
-    stats.totalEvents = stats.nextEvents + stats.passedEvents;
+    }, { passedEvents: [], nextEvents: [] });
+    stats.allEvents = [...stats.nextEvents, ...stats.passedEvents];
     return stats;
   }
 };

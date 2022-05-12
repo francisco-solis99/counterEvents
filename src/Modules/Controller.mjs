@@ -22,15 +22,22 @@ Controller.prototype = {
     // update or creat the resume
     const events = this.model.getEvents();
     if (events.length === 1) {
-      this.view.renderResumeEvents(this.model.generateEventStats());
+      this.view.areEvents = true;
+      this.view.renderResumeEvents(this.model.generateSeparetedEvents());
     } else {
-      this.view.updateResume(this.model.generateEventStats());
+      this.view.updateResume(this.model.generateSeparetedEvents());
     }
   },
 
   handlerDeleteEvent (idEvent) {
     this.model.deleteEvent(idEvent);
-    this.view.updateResume(this.model.generateEventStats());
+    this.view.updateResume(this.model.generateSeparetedEvents());
+  },
+
+  handlerFilterViews (label) {
+    const separatedEvents = this.model.generateSeparetedEvents();
+    const filterEvents = separatedEvents[label];
+    this.view.renderFilterEvents(filterEvents);
   },
 
   onEventsChanges (action, event) {
@@ -42,7 +49,10 @@ Controller.prototype = {
   handlerInitRender () {
     this.model.updateDates();
     this.view.renderInitialEvents(this.model.getEvents());
-    this.view.renderResumeEvents(this.model.generateEventStats());
+    if (this.view.areEvents) {
+      this.view.renderResumeEvents(this.model.generateSeparetedEvents());
+      this.view.bindViewsEvents(this.handlerFilterViews.bind(this));
+    }
   }
 
 };

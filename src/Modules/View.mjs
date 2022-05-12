@@ -1,11 +1,13 @@
 export function View () {
   this.counterEventForm = document.querySelector('.counter-event__form');
   this.eventsListHtml = document.querySelector('.counter-event__list');
+  this.areEvents = false;
 }
 
 View.prototype = {
   constructor: View,
 
+  // binders to the events
   bindAddEvent (handler) {
     this.counterEventForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -23,6 +25,17 @@ View.prototype = {
     });
   },
 
+  bindViewsEvents (handler) {
+    const viewsContainer = document.querySelector('.counter-event__resume-views');
+    viewsContainer.addEventListener('click', (e) => {
+      if (e.target.type === 'radio') {
+        const labelToFilter = e.target.value;
+        handler(labelToFilter);
+      }
+    });
+  },
+
+  // actions to render
   addEvent (event) {
     if (this.eventsListHtml.querySelector('.counter-event__default-msg')) {
       this.eventsListHtml.innerHTML = '';
@@ -42,6 +55,7 @@ View.prototype = {
       if (!that.eventsListHtml.querySelector('li')) {
         // for take time to end the last animation
         setTimeout(() => that.renderDefaultMessage('No more events 😃'), 400);
+        that.areEvents = false;
       }
     }, 200);
   },
@@ -76,30 +90,58 @@ View.prototype = {
       this.renderDefaultMessage('Not Events yet 😀');
       return;
     };
+    this.areEvents = true;
     const fragmnet = document.createDocumentFragment();
     events.forEach(event => fragmnet.appendChild(this.createEvent(event)));
     this.eventsListHtml.appendChild(fragmnet);
   },
 
-  renderResumeEvents ({ totalEvents, nextEvents, passedEvents }) {
-    if (!totalEvents) return;
+  renderResumeEvents ({ allEvents, nextEvents, passedEvents }) {
     const resume = document.createElement('div');
     resume.classList.add('counter-event__resume');
     resume.innerHTML = `
-      <span class="counter-event__resume-total">${totalEvents} total events</span>
+      <span class="counter-event__resume-total">${allEvents.length} total events</span>
+      <div class="counter-event__resume-views">
+        <label for="view1" class="view-label">
+          <input type="radio" name="resume-views" id="view1" value="allEvents"  checked>
+          <span>All events</span>
+        </label>
+
+        <label for="view2" class="view-label">
+          <input type="radio" name="resume-views" id="view2" value="passedEvents" >
+          <span>Passed Events</span>
+        </label>
+
+        <label for="view3" class="view-label">
+          <input type="radio" name="resume-views" id="view3" value="nextEvents" >
+          <span>Next Events</span>
+        </label>
+      </div>
       <div class="counter-event__resume-stats">
-        <span class="counter-event__resume-stat"><mark>${nextEvents} events will pass</mark></span>
-        <span class="counter-event__resume-stat"><mark>${passedEvents} events passed</mark></span>
+        <span class="counter-event__resume-stat"><mark>${nextEvents.length} events will pass</mark></span>
+        <span class="counter-event__resume-stat"><mark>${passedEvents.length} events passed</mark></span>
       </div>
     `;
     document.querySelector('main').appendChild(resume);
   },
 
-  updateResume (stats) {
+  updateResume ({ allEvents, nextEvents, passedEvents }) {
     const resume = document.querySelector('.counter-event__resume');
     // update values
-    resume.querySelector('.counter-event__resume-total').textContent = stats.totalEvents + ' total events';
-    resume.querySelector('.counter-event__resume-stat:first-child mark').textContent = stats.nextEvents + ' events will pass';
-    resume.querySelector('.counter-event__resume-stat:last-child mark').textContent = stats.passedEvents + ' events passed';
+    resume.querySelector('.counter-event__resume-total').textContent = allEvents.length + ' total events';
+    resume.querySelector('.counter-event__resume-stat:first-child mark').textContent = nextEvents.length + ' events will pass';
+    resume.querySelector('.counter-event__resume-stat:last-child mark').textContent = passedEvents.length + ' events passed';
+  },
+
+  renderFilterEvents (filterEvents) {
+    const currentEventsOnScreen = this.eventsListHtml.querySelectorAll('li.couter-event__item');
+    const idEventsToFilter = filterEvents.map(event => event.id);
+    currentEventsOnScreen.forEach(event => {
+      if (idEventsToFilter.includes(+event.id)) {
+        event.style.display = 'flex';
+        return;
+      }
+      event.style.display = 'none';
+    });
   }
 };
