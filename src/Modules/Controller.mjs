@@ -8,9 +8,13 @@ export function Controller (model, view) {
 
   // bind with model to change in teh UI
   this.model.bindEventsChanges(this.onEventsChanges.bind(this));
+  this.view.bindUpdateOrder(this.handlerDragAndDrop.bind(this));
 
   // render the initial events if exist
   this.handlerInitRender();
+
+  // add the listeners for drag and drop feature for the initial events after render them
+  this.view.bindDragAndDropItems();
 }
 
 Controller.prototype = {
@@ -38,6 +42,11 @@ Controller.prototype = {
     const separatedEvents = this.model.generateSeparetedEvents();
     const filterEvents = separatedEvents[label];
     this.view.renderFilterEvents(filterEvents);
+  },
+
+  handlerDragAndDrop (eventsTitles) {
+    console.log('do something with model');
+    this.model.reOrderEvents(eventsTitles);
   },
 
   onEventsChanges (action, event) {

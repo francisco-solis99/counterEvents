@@ -19,7 +19,7 @@ body {
 }
 
 #app {
-  min-width: 320px;
+  min-width: 350px;
 }
 
 .header {
@@ -121,17 +121,34 @@ input[type="submit"]:hover {
 }
 
 .couter-event__item {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 10px;
+  min-height: 60px;
   align-items: center;
-  justify-content: space-between;
   padding: 10px;
   font-size: 0.9rem;
   border: 2px solid white;
-  cursor: move;
+  cursor: grab;
+  transition: all ease-in-out 250ms linear;
 }
 
+.couter-event__item:active {
+  cursor: grabbing;
+}
+
+.couter-event__item.isDrag {
+  border: 2px dashed #fff;
+  opacity: 0.4;
+}
+
+.couter-event__item > p {
+  pointer-events: none;
+}
+
+
 .couter-event__item, .counter-event__resume {
-  animation: fadeIn ease-in 500ms;
+  animation: fadeIn ease-in 400ms;
 }
 
 .couter-event__item-delated {
@@ -139,14 +156,13 @@ input[type="submit"]:hover {
 }
 
 .counter-event__name {
-  text-align: center;
   font-size: 0.9rem;
   font-weight: normal;
   margin: 0;
 }
 
 .counter-event__button {
-  padding: 4px;
+  padding: 8px 5px;
   border: 0;
   border-radius: 5px;
   background-color: rgb(229, 22, 22);

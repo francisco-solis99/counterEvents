@@ -2,6 +2,8 @@ export function View () {
   this.counterEventForm = document.querySelector('.counter-event__form');
   this.eventsListHtml = document.querySelector('.counter-event__list');
   this.areEvents = false;
+  this.currentItem = null;
+  this.orderToBind = null;
 }
 
 View.prototype = {
@@ -35,12 +37,79 @@ View.prototype = {
     });
   },
 
+  bindDragAndDropItems () {
+    const eventItems = this.getEventItems();
+    eventItems.forEach(item => {
+      this.addDragAndDropListeners(item);
+    });
+  },
+
+  addDragAndDropListeners (element) {
+    element.addEventListener('dragstart', this.dragAndDropActions('handlerDragStart').bind(this));
+    element.addEventListener('dragend', this.dragAndDropActions('handlerDragEnd'));
+    element.addEventListener('dragover', this.dragAndDropActions('handlerDragOver'));
+    element.addEventListener('drop', this.dragAndDropActions('handlerDrop').bind(this));
+    element.addEventListener('dragenter', this.dragAndDropActions('handlerDragEnter'));
+    element.addEventListener('dragleave', this.dragAndDropActions('handlerDragLeave'));
+  },
+
+  bindUpdateOrder (callback) {
+    this.orderToBind = callback;
+  },
+
+  getEventItems () {
+    const events = document.querySelectorAll('li.couter-event__item');
+    return events;
+  },
+
+  dragAndDropActions (action) {
+    const actions = {
+      handlerDragStart (e) {
+        e.target.classList.add('isDrag');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', e.target.innerHTML);
+        this.currentItem = e.target;
+      },
+
+      handlerDragEnd (e) {
+        e.target.classList.remove('isDrag');
+      },
+
+      handlerDragOver (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      },
+
+      handlerDrop (e) {
+        e.target.style.background = 'transparent';
+        const data = e.dataTransfer.getData('text/html');
+        if (e.target !== this.currentItem && e.target.classList.contains('couter-event__item')) {
+          this.currentItem.innerHTML = e.target.innerHTML;
+          e.target.innerHTML = data;
+        }
+        const items = [...this.eventsListHtml.querySelectorAll('.counter-event__name')];
+        const titleItemsOrder = items.map(item => item.textContent);
+        this.orderToBind(titleItemsOrder);
+      },
+
+      handlerDragEnter (e) {
+        e.target.style.background = 'hsl(234deg 39% 55%)';
+      },
+
+      handlerDragLeave (e) {
+        e.target.style.background = 'transparent';
+      }
+    };
+    return actions[action];
+  },
+
   // actions to render
   addEvent (event) {
     if (this.eventsListHtml.querySelector('.counter-event__default-msg')) {
       this.eventsListHtml.innerHTML = '';
     }
     const newEvent = this.createEvent(event);
+    this.addDragAndDropListeners(newEvent);
     this.eventsListHtml.appendChild(newEvent);
   },
 
@@ -62,18 +131,19 @@ View.prototype = {
 
   createEvent ({ id, title, date, daysForEvent }) {
     const liItem = document.createElement('li');
+    liItem.id = id;
+    liItem.classList.add('couter-event__item');
+    liItem.draggable = 'true';
     const daysLabel = daysForEvent === 1 || daysForEvent === -1
       ? 'day'
       : daysForEvent
         ? 'days'
         : '';
     liItem.innerHTML = `
-      <li class="couter-event__item" id=${id}>
         <p class="counter-event__days"><span>${Math.abs(daysForEvent) || 'Today'}</span> ${daysLabel} ${daysForEvent >= 0 ? '' : 'ago'}</p>
         <p class="counter-event__name">${title}</p>
         <p class="counter-event__date">${date}</p>
         <button type="button" class="counter-event__button">Eliminar</button>
-      </li>
     `;
     return liItem;
   },
@@ -136,12 +206,25 @@ View.prototype = {
   renderFilterEvents (filterEvents) {
     const currentEventsOnScreen = this.eventsListHtml.querySelectorAll('li.couter-event__item');
     const idEventsToFilter = filterEvents.map(event => event.id);
+    console.log(currentEventsOnScreen);
+    console.log(idEventsToFilter);
     currentEventsOnScreen.forEach(event => {
       if (idEventsToFilter.includes(+event.id)) {
         event.style.display = 'flex';
         return;
       }
-      event.style.display = 'none';
+      // event.classList.add('couter-event__item-delated');
+      // event.style.display = 'none';
+      console.log('oculto para el evento => ' + event.id);
+      setTimeout(function () {
+        event.classList.add('couter-event__item-delated');
+        event.onanimationend = function (e) {
+          if (e.animationName === 'fadeOut') {
+            event.style.display = 'none';
+            event.classList.remove('couter-event__item-delated');
+          }
+        };
+      }, 100);
     });
   }
 };

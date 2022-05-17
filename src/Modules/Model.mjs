@@ -19,6 +19,13 @@ Model.prototype = {
     this.actionToBind('addEvent', { ...event });
   },
 
+  reOrderEvents (events) {
+    this.eventsList = this.eventsList.map((event, index, self) => {
+      return self.find(item => item.title === events[index]);
+    });
+    this.saveEventsList();
+  },
+
   updateDates () {
     if (!this.eventsList.length) return;
     this.eventsList.forEach(event => {
