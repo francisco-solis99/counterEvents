@@ -210,7 +210,7 @@ View.prototype = {
     console.log(idEventsToFilter);
     currentEventsOnScreen.forEach(event => {
       if (idEventsToFilter.includes(+event.id)) {
-        event.style.display = 'flex';
+        event.style.display = 'grid';
         return;
       }
       // event.classList.add('couter-event__item-delated');
